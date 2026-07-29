@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import { userService } from "../services/user.service.ts";
+import { AppError } from "../errors/app.error.ts";
 
 export function getUsers(req: Request, res: Response) {
     const users = userService.getAll();
@@ -11,11 +12,7 @@ export function getUserById(req: Request, res: Response) {
     const user = userService.getById(id);
 
     if (!user) {
-        res.status(404).json({
-            message: "User not found",
-        });
-
-        return;
+        throw new AppError("User not found", 404);
     }
     res.json(user);
 }
@@ -30,11 +27,7 @@ export function updateUser(req: Request, res: Response) {
     const user = userService.update(id, req.body);
 
     if (!user) {
-        res.status(404).json({
-            message: "User not found",
-        });
-
-        return;
+        throw new AppError("User not found", 404);
     }
     res.json(user);
 }
@@ -43,11 +36,10 @@ export function deleteUser(req: Request, res: Response) {
     const deleted = userService.delete(id);
 
     if (!deleted) {
-        res.status(404).json({
-            message: "User not found",
-        });
-
-        return;
+        throw new AppError("User not found", 404);
     }
-    res.status(204).send();
+
+    res.status(204).json({
+        message: "User successfully deleted",
+    });
 }
