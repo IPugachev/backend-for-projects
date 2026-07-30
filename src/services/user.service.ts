@@ -1,52 +1,46 @@
-import type { User } from "../types/user.ts";
+import { prisma } from "../lib/prisma.ts";
+import type {
+    UserCreateInput,
+    UserUpdateInput,
+} from "../generated/prisma/models.ts";
+import { AppError } from "../errors/app.error.ts";
 
 class UserService {
-    private users: User[] = [];
-
-    getAll(): User[] {
-        return this.users;
+    async getAll() {
+        return prisma.user.findMany();
     }
 
-    getById(id: number): User | undefined {
-        return this.users.find((user) => user.id === id);
-    }
-
-    create(data: Omit<User, "id">): User {
-        const user: User = {
-            id: Date.now(),
-            ...data,
-        };
-
-        this.users.push(user);
-
-        return user;
-    }
-
-    update(
-        id: number,
-        data: Partial<User>,
-    ): User | undefined {
-        const user = this.getById(id);
-
-        if (!user) return undefined;
-
-        Object.assign(user, data);
-
-        return user;
-    }
-
-    delete(id: number): boolean {
-        const index = this.users.findIndex(
-            (user) => user.id === id,
-        );
-
-        if (index === -1) {
-            return false;
+    async getById(id: number) {
+        const user = await prisma.user.findUnique({
+            where: {
+                id,
+            },
+        });
+        if (!user) {
+            throw new AppError("User not found", 404);
         }
+        return user;
+    }
 
-        this.users.splice(index, 1);
+    async create(data: UserCreateInput) {
+        return prisma.user.create({
+            data,
+        });
+    }
 
-        return true;
+    async update(id: number, data: UserUpdateInput) {
+        return prisma.user.update({
+            where: {
+                id,
+            },
+            data,
+        });
+    }
+
+    async delete(id: number) {
+        return prisma.user.delete({
+            where: { id },
+        });
     }
 }
 export const userService = new UserService();

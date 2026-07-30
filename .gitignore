@@ -3,3 +3,5 @@ dist
 .idea
 .env
 /src/generated/prisma
+
+/generated/prisma
