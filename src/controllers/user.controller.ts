@@ -1,6 +1,12 @@
 import type { Request, Response } from "express";
 import { userService } from "../services/user.service.ts";
 
+export async function getMe(req: Request, res: Response) {
+    const userId = req.user.id;
+    const users = await userService.getById(userId);
+    res.json(users);
+}
+
 export async function getUsers(
     req: Request,
     res: Response,
@@ -36,6 +42,19 @@ export async function updateUser(
 
     res.json(user);
 }
+export async function changePassword(
+    req: Request,
+    res: Response,
+) {
+    const userId = req.user.id;
+    const user = await userService.changePassword(
+        userId,
+        req.body,
+    );
+
+    res.json(user);
+}
+
 export async function deleteUser(
     req: Request,
     res: Response,

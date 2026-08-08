@@ -1,16 +1,22 @@
 import type { Request, Response } from "express";
+import type { RegisterLoginDto } from "../schemas/auth.schema.ts";
 import { authService } from "../services/auth.service.ts";
 
-export async function test(req: Request, res: Response) {
-    try {
-        const result = await authService.test("test");
+export async function register(
+    req: Request,
+    res: Response,
+) {
+    const dto = req.body as RegisterLoginDto;
 
-        res.json({
-            result,
-        });
-    } catch (error) {
-        res.status(500).json({
-            message: "Server error",
-        });
-    }
+    const result = await authService.register(dto);
+
+    res.status(201).json(result);
+}
+
+export async function login(req: Request, res: Response) {
+    const dto = req.body as RegisterLoginDto;
+
+    const result = await authService.login(dto);
+
+    res.json(result);
 }
