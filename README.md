@@ -4,13 +4,13 @@ Backend приложение на Node.js с использованием Expres
 
 ## Стек
 
-* Node.js
-* Express
-* TypeScript
-* Prisma ORM
-* PostgreSQL
-* Docker
-* Zod
+- Node.js
+- Express
+- TypeScript
+- Prisma ORM
+- PostgreSQL
+- Docker
+- Zod
 
 ---
 
@@ -62,12 +62,12 @@ DATABASE_URL="postgresql://postgres:postgres@localhost:5432/backend"
 
 Расшифровка:
 
-* `postgresql` — используемый тип базы данных
-* `postgres` — пользователь базы данных
-* `postgres` — пароль
-* `localhost` — адрес сервера базы данных
-* `5432` — порт PostgreSQL
-* `backend` — название базы данных
+- `postgresql` — используемый тип базы данных
+- `postgres` — пользователь базы данных
+- `postgres` — пароль
+- `localhost` — адрес сервера базы данных
+- `5432` — порт PostgreSQL
+- `backend` — название базы данных
 
 ---
 

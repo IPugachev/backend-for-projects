@@ -4,10 +4,16 @@
     "main": "index.js",
     "type": "module",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
         "dev": "tsx watch src/server.ts",
         "build": "tsc",
-        "start": "node dist/server.js"
+        "start": "node dist/server.js",
+        "db:migrate": "prisma migrate dev",
+        "db:generate": "prisma generate",
+        "lint": "eslint .",
+        "lint:fix": "eslint . --fix",
+        "format": "prettier --write .",
+        "format:check": "prettier --check .",
+        "check": "npm run lint && npm run format:check && npm run build"
     },
     "keywords": [],
     "author": "",
@@ -25,15 +31,19 @@
         "zod": "^4.4.3"
     },
     "devDependencies": {
+        "@eslint/js": "^10.0.1",
         "@types/bcrypt": "^6.0.0",
         "@types/cors": "^2.8.19",
         "@types/express": "^5.0.6",
         "@types/jsonwebtoken": "^9.0.10",
         "@types/node": "^26.1.2",
         "@types/pg": "^8.20.0",
+        "eslint": "^10.8.1",
+        "globals": "^17.9.0",
         "prettier": "3.9.6",
         "prisma": "^7.9.1",
         "tsx": "^4.23.1",
-        "typescript": "^7.0.2"
+        "typescript": "^6.0.3",
+        "typescript-eslint": "^8.66.0"
     }
 }
