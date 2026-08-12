@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
     login,
+    logout,
     register,
 } from "../controllers/auth.controller.ts";
 import { validate } from "../middlewares/validate.middleware.ts";
@@ -19,5 +20,6 @@ AuthRouter.post(
     validate({ body: registerSchema }),
     login,
 );
+AuthRouter.post("/logout", logout);
 
 export default AuthRouter;

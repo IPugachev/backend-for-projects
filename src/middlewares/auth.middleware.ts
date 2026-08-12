@@ -10,23 +10,15 @@ export function authMiddleware(
     res: Response,
     next: NextFunction,
 ) {
-    const authHeader = req.headers.authorization;
+    const authToken = req.cookies.token;
 
-    if (!authHeader) {
+    if (!authToken) {
         return res.status(401).json({
             message: "Unauthorized",
         });
     }
 
-    if (!authHeader.startsWith("Bearer ")) {
-        return res.status(401).json({
-            message: "Unauthorized",
-        });
-    }
-
-    const token = authHeader.replace("Bearer ", "");
-
-    req.user = verifyToken(token);
+    req.user = verifyToken(authToken);
 
     next();
 }

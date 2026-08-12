@@ -8,15 +8,30 @@ export async function register(
 ) {
     const dto = req.body as RegisterLoginDto;
 
-    const result = await authService.register(dto);
+    await authService.register(dto);
 
-    res.status(201).json(result);
+    res.status(201).end();
 }
 
 export async function login(req: Request, res: Response) {
     const dto = req.body as RegisterLoginDto;
 
-    const result = await authService.login(dto);
+    const { token } = await authService.login(dto);
+    res.cookie("token", token, {
+        httpOnly: true,
+        secure: process.env.MODE === "production",
+        sameSite: "lax",
+    });
 
-    res.json(result);
+    res.status(200).end();
+}
+
+export async function logout(req: Request, res: Response) {
+    res.clearCookie("token", {
+        httpOnly: true,
+        secure: process.env.MODE === "production",
+        sameSite: "lax",
+    });
+
+    res.status(204).end();
 }

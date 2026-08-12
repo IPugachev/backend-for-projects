@@ -21,19 +21,13 @@ class AuthService {
             10,
         );
 
-        const user = await prisma.user.create({
+        await prisma.user.create({
             data: {
                 ...dto,
                 password: hashedPassword,
             },
         });
-        const token = generateToken({
-            id: user.id,
-        });
-
-        return {
-            token,
-        };
+        return;
     }
 
     async login(dto: RegisterLoginDto) {
@@ -45,7 +39,7 @@ class AuthService {
             throw new AppError("User not found", 404);
         }
 
-        const isValid = bcrypt.compare(
+        const isValid = await bcrypt.compare(
             dto.password,
             existingUser.password,
         );
