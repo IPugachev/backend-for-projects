@@ -1,8 +1,8 @@
-import type { RegisterLoginDto } from "../schemas/auth.schema.ts";
-import { prisma } from "../lib/prisma.ts";
-import { AppError } from "../errors/app.error.ts";
+import type { RegisterLoginDto } from "../../schemas/auth.schema.ts";
+import { prisma } from "../../lib/prisma.ts";
+import { AppError } from "../../errors/app.error.ts";
 import bcrypt from "bcrypt";
-import { generateToken } from "../lib/jwt.ts";
+import { generateToken } from "../../lib/jwt.ts";
 
 class AuthService {
     async register(dto: RegisterLoginDto) {
@@ -21,13 +21,25 @@ class AuthService {
             10,
         );
 
-        await prisma.user.create({
+        const user = await prisma.user.create({
             data: {
                 ...dto,
                 password: hashedPassword,
             },
+            omit: {
+                password: true,
+            },
         });
-        return;
+
+        await prisma.profile.create({
+            data: { userId: user.id },
+        });
+
+        const token = generateToken({
+            id: user.id,
+        });
+
+        return { token };
     }
 
     async login(dto: RegisterLoginDto) {

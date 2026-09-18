@@ -1,21 +1,21 @@
-import { prisma } from "../lib/prisma.ts";
-import { AppError } from "../errors/app.error.ts";
+import { prisma } from "../../lib/prisma.ts";
+import { AppError } from "../../errors/app.error.ts";
 import type {
     ChangeUserPasswordDto,
     CreateUserDto,
     UpdateUserDto,
-} from "../schemas/user.schema.ts";
-import { userPublicSelect } from "../types/user.ts";
+} from "../../schemas/user.schema.ts";
+import { userPublicSelect } from "../../types/user.ts";
 import bcrypt from "bcrypt";
 
 class UserService {
-    async getAll() {
+    async getAllUsers() {
         return prisma.user.findMany({
             select: userPublicSelect,
         });
     }
 
-    async getById(id: number) {
+    async getUserById(id: number) {
         const user = await prisma.user.findUnique({
             where: {
                 id,
@@ -30,7 +30,7 @@ class UserService {
         return user;
     }
 
-    async create(dto: CreateUserDto) {
+    async createUser(dto: CreateUserDto) {
         const user = await prisma.user.findUnique({
             where: {
                 username: dto.username,
@@ -59,7 +59,7 @@ class UserService {
         });
     }
 
-    async update(id: number, dto: UpdateUserDto) {
+    async updateUser(id: number, dto: UpdateUserDto) {
         return prisma.user.update({
             where: {
                 id,
@@ -108,8 +108,8 @@ class UserService {
         });
     }
 
-    async delete(id: number) {
-        await this.getById(id);
+    async deleteUser(id: number) {
+        await this.getUserById(id);
 
         await prisma.user.delete({
             where: { id },

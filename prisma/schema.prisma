@@ -8,7 +8,64 @@ datasource db {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  password String
-  username String @unique
+  id        Int       @id @default(autoincrement())
+  password  String
+  username  String    @unique
+  profile   Profile?
+  articles  Article[]
+  createdAt DateTime  @default(now())
+}
+
+model Profile {
+  id       Int     @id @default(autoincrement())
+  first    String?
+  last     String?
+  age      Int?
+  currency String?
+  country  String?
+  city     String?
+
+  imageId Int?
+  avatar  Image?
+
+  userId Int  @unique
+  user   User @relation(fields: [userId], references: [id])
+}
+
+model Article {
+  id        Int      @id @default(autoincrement())
+  title     String
+  subtitle  String
+  images    Image[]
+  views     Int      @default(0)
+  createdAt DateTime @default(now())
+  type      String[]
+  blocks    Json
+
+  authorId Int
+  author   User @relation(fields: [authorId], references: [id])
+
+  @@index([authorId])
+}
+
+enum ImageType {
+  AVATAR  @map("avatar")
+  ARTICLE @map("article")
+}
+
+model Image {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  type      ImageType
+  mimeType  String
+  base64    String
+
+  profileId Int?     @unique
+  profile   Profile? @relation(fields: [profileId], references: [id])
+
+  articleId Int?
+  article   Article? @relation(fields: [articleId], references: [id])
+
+  @@index([profileId])
+  @@index([articleId])
 }

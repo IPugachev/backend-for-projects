@@ -19,6 +19,7 @@ const UserRouter = Router();
 
 UserRouter.get("/", authMiddleware, getUsers);
 UserRouter.get("/me", authMiddleware, getMe);
+
 UserRouter.get(
     "/:id",
     authMiddleware,

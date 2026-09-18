@@ -8,7 +8,6 @@ import { validate } from "../middlewares/validate.middleware.ts";
 import { registerSchema } from "../schemas/auth.schema.ts";
 
 const AuthRouter = Router();
-
 AuthRouter.post(
     "/register",
     validate({ body: registerSchema }),

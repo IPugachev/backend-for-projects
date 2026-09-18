@@ -8,6 +8,7 @@ import UserRouter from "./routes/user.routes.ts";
 import { errorHandler } from "./middlewares/error.middleware.ts";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import ProfileRouter from "./routes/profile.routes.ts";
 
 const app = express();
 
@@ -22,7 +23,6 @@ app.use(
         credentials: true,
     }),
 );
-
 app.use(express.json());
 
 const artificialDelay = (ms: number) => {
@@ -39,10 +39,11 @@ const artificialDelay = (ms: number) => {
 };
 
 if (process.env.MODE === "dev") {
-    app.use(artificialDelay(1000));
+    app.use(artificialDelay(200));
 }
 app.use("/api/auth", AuthRouter);
 app.use("/api/users", UserRouter);
+app.use("/api/profile", ProfileRouter);
 
 // Обработка ошибок
 

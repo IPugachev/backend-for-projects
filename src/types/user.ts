@@ -6,6 +6,7 @@ import type {
 export const userPublicSelect = {
     id: true,
     username: true,
+    createdAt: true,
 } satisfies UserSelect;
 
 export type PublicUser = UserGetPayload<{
