@@ -25,14 +25,14 @@ class AuthService {
             data: {
                 ...dto,
                 password: hashedPassword,
+                profile: {
+                    create: {},
+                },
             },
+
             omit: {
                 password: true,
             },
-        });
-
-        await prisma.profile.create({
-            data: { userId: user.id },
         });
 
         const token = generateToken({

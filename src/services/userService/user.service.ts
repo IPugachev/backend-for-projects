@@ -21,6 +21,7 @@ class UserService {
                 id,
             },
             select: userPublicSelect,
+
         });
 
         if (!user) {

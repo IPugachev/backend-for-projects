@@ -9,7 +9,7 @@ class ProfileService {
     async getProfile(id: number) {
         const profile = await prisma.profile.findUnique({
             where: {
-                userId: id,
+                id,
             },
             include: {
                 avatar: true,
@@ -26,13 +26,10 @@ class ProfileService {
     ): Promise<Profile> {
         return prisma.profile.create({ data });
     }
-    async updateProfile(
-        userId: number,
-        dto: UpdateProfileDto,
-    ) {
+    async updateProfile(id: number, dto: UpdateProfileDto) {
         return prisma.profile.update({
             where: {
-                userId,
+                id,
             },
             data: dto,
             include: {

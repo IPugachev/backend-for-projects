@@ -9,6 +9,7 @@ import { errorHandler } from "./middlewares/error.middleware.ts";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import ProfileRouter from "./routes/profile.routes.ts";
+import ArticleRouter from "./routes/article.route.ts";
 
 const app = express();
 
@@ -44,6 +45,7 @@ if (process.env.MODE === "dev") {
 app.use("/api/auth", AuthRouter);
 app.use("/api/users", UserRouter);
 app.use("/api/profile", ProfileRouter);
+app.use("/api/articles", ArticleRouter);
 
 // Обработка ошибок
 

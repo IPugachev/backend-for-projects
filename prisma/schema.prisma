@@ -8,16 +8,20 @@ datasource db {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   password  String
-  username  String    @unique
+  username  String   @unique
   profile   Profile?
-  articles  Article[]
-  createdAt DateTime  @default(now())
+  createdAt DateTime @default(now())
+
+  articles Article[]
+  comments Comment[]
+  images   Image[]
 }
 
 model Profile {
-  id       Int     @id @default(autoincrement())
+  id       Int     @id
+  user     User    @relation(fields: [id], references: [id])
   first    String?
   last     String?
   age      Int?
@@ -25,25 +29,22 @@ model Profile {
   country  String?
   city     String?
 
-  imageId Int?
-  avatar  Image?
-
-  userId Int  @unique
-  user   User @relation(fields: [userId], references: [id])
+  avatar Image?
 }
 
 model Article {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   title     String
   subtitle  String
   images    Image[]
-  views     Int      @default(0)
-  createdAt DateTime @default(now())
+  views     Int       @default(0)
+  createdAt DateTime  @default(now())
   type      String[]
   blocks    Json
+  comments  Comment[]
+  authorId  Int
 
-  authorId Int
-  author   User @relation(fields: [authorId], references: [id])
+  author User @relation(fields: [authorId], references: [id])
 
   @@index([authorId])
 }
@@ -60,12 +61,30 @@ model Image {
   mimeType  String
   base64    String
 
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
   profileId Int?     @unique
   profile   Profile? @relation(fields: [profileId], references: [id])
 
   articleId Int?
   article   Article? @relation(fields: [articleId], references: [id])
 
-  @@index([profileId])
+  @@index([userId])
   @@index([articleId])
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  text      String
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  articleId Int
+  article   Article @relation(fields: [articleId], references: [id])
+
+  @@index([articleId])
+  @@index([userId])
 }
